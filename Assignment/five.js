@@ -1,5 +1,5 @@
 
-   <!DOCTYPE html>
+  <!DOCTYPE html>
 <html>
 <head>
     <title>Technical Skills List</title>
@@ -83,4 +83,4 @@ function removeSkill() {
 </script>
 
 </body>
-</html>
+</html
