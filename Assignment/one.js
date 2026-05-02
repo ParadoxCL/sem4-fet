@@ -13,6 +13,7 @@ document.getElementById("k1").addEventListener("click", function() {
 
 
 function editRole() {
+    debugger;
     let newRole = prompt("Enter your new role:");
 
     if (newRole && newRole.trim() !== "") {
