@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keerthana Acharya | Secure Terminal</title>
+
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --accent-blue: #38bdf8;
+            --light-blue: #7dd3fc;
+            --glass: rgba(255, 255, 255, 0.08);
+            --error: #ff6b6b;
+            --success: #22c55e;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at center, #1e3a8a 0%, #0f172a 100%);
+            color: white;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .security-card {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7);
+            width: 320px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .icon-box {
+            width: 80px;
+            height: 80px;
+            background: var(--accent-blue);
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 0 20px var(--accent-blue);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 20px rgba(56, 189, 248, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(56, 189, 248, 0);
+            }
+        }
+
+        h1 {
+            color: var(--light-blue);
+            margin: 0 0 0.5rem;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+        }
+
+        p {
+            color: #cbd5e1;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+
+        input {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--accent-blue);
+            border-radius: 8px;
+            padding: 12px;
+            width: 100%;
+            color: white;
+            text-align: center;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            box-sizing: border-box;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            border-color: var(--light-blue);
+            box-shadow: 0 0 10px var(--accent-blue);
+        }
+
+        button {
+            background: var(--accent-blue);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            width: 100%;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        button:hover {
+            background: var(--light-blue);
+            transform: scale(1.02);
+        }
+
+        button:disabled {
+            background: #475569;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        #status-msg {
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            height: 1rem;
+        }
+
+        .error {
+            color: var(--error);
+        }
+
+        .success {
+            color: var(--success);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="security-card">
+
+        <div class="icon-box">🔒</div>
+
+        <h1>System Access</h1>
+
+        <p id="attempts-left">
+            Identity Verification Required
+        </p>
+
+        <input
+            type="password"
+            id="passInput"
+            placeholder="Enter Security Code"
+            autofocus
+        >
+
+        <button id="verifyBtn">
+            Unlock Terminal
+        </button>
+
+        <div id="status-msg"></div>
+
+    </div>
+
+    <script>
+
+        const KEY = "Kitty2025";
+        let tries = 3;
+
+        const input = document.getElementById('passInput');
+        const btn = document.getElementById('verifyBtn');
+        const msg = document.getElementById('status-msg');
+        const attemptsText =
+            document.getElementById('attempts-left');
+
+        btn.addEventListener('click', () => {
+
+            const val = input.value;
+
+            if (val === KEY) {
+
+                msg.className = "success";
+
+                msg.innerText =
+                    "ACCESS GRANTED. Welcome, Keerthana.";
+
+                input.disabled = true;
+                btn.disabled = true;
+
+                setTimeout(() => {
+                    window.location.href = "https://github.io";
+                }, 1500);
+
+            } else {
+
+                tries--;
+
+                input.value = "";
+
+                if (tries > 0) {
+
+                    msg.className = "error";
+
+                    msg.innerText = "INVALID KEY";
+
+                    attemptsText.innerText =
+                        `${tries} attempts remaining`;
+
+                } else {
+
+                    msg.className = "error";
+
+                    msg.innerText = "SYSTEM LOCKED";
+
+                    input.disabled = true;
+                    btn.disabled = true;
+
+                    attemptsText.innerText =
+                        "0 attempts remaining";
+                }
+            }
+        });
+
+        input.addEventListener('keypress', (e) => {
+
+            if (e.key === 'Enter') {
+                btn.click();
+            }
+
+        });
+
+    </script>
+
+</body>
+</html>
